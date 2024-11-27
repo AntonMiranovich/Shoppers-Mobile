@@ -1,18 +1,31 @@
-import { Link } from "expo-router";
+import { Link, useRouter } from "expo-router";
 import { useState } from "react";
 import { StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 
 export default function login() {
     const [user, setUser] = useState({ email: '', password: '' })
 
+    const router = useRouter()
+
     const changesUser = (value: any, tag: any) => {
         setUser({ ...user, [tag]: value });
     };
 
+    const auth = () => {
+        try {
+            if (!user.email || !user.password) throw new Error('одно из полей не заполнено')
+            if (user.password.length < 8) throw new Error('пороль менее 8 символов')
+
+            router.push('/products')
+        } catch (error: any) {
+            console.log(error.message);
+        }
+    }
+
     return (
         <>
-            <View style={{ alignItems: 'center', gap: 67, backgroundColor: 'white',flex:1 }}>
-                <View style={{ width: '90%', alignContent: 'center',marginLeft:40, marginTop: 120 }}>
+            <View style={{ alignItems: 'center', gap: 67, backgroundColor: 'white', flex: 1 }}>
+                <View style={{ width: '90%', alignContent: 'center', marginLeft: 40, marginTop: 120 }}>
                     <Text style={styles.titleBig}>Welcome Back !</Text>
                     <Text style={styles.titleSmall}>Login with Username & password</Text>
                 </View>
@@ -26,7 +39,7 @@ export default function login() {
                         <Text style={styles.titleBtn}>Password</Text>
                         <TextInput style={styles.inp} onChangeText={(value) => changesUser(value, 'password')} secureTextEntry={true} ></TextInput>
                     </View>
-                    <TouchableOpacity onPress={() => console.log(user)} style={styles.btn}><Text style={styles.titleSing}>SIGN IN</Text></TouchableOpacity>
+                    <TouchableOpacity onPress={auth} style={styles.btn}><Text style={styles.titleSing}>SIGN IN</Text></TouchableOpacity>
                 </View>
 
                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
