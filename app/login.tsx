@@ -1,9 +1,23 @@
+import CreateInputForm from "@/components/createInputForm";
 import { Link, useRouter } from "expo-router";
-import { useState } from "react";
-import { StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { useEffect, useState } from "react";
+import { StyleSheet, Text, View, Animated } from "react-native";
 
 export default function login() {
-    const [user, setUser] = useState({ email: '', password: '' })
+    const inpForm = [
+        {
+            id: 1,
+            title: 'username',
+            secure: false
+        },
+        {
+            id: 2,
+            title: 'password',
+            secure: true
+        },
+    ]
+
+    const [user, setUser] = useState({ username: '', password: '' })
 
     const router = useRouter()
 
@@ -13,7 +27,7 @@ export default function login() {
 
     const auth = () => {
         try {
-            if (!user.email || !user.password) throw new Error('одно из полей не заполнено')
+            if (!user.username || !user.password) throw new Error('одно из полей не заполнено')
             if (user.password.length < 8) throw new Error('пороль менее 8 символов')
 
             router.push('/products')
@@ -22,32 +36,34 @@ export default function login() {
         }
     }
 
+    const animation = new Animated.Value(0);
+
+    useEffect(() => {
+        Animated.timing(animation, {
+            toValue: 1,
+            duration: 1000,
+            useNativeDriver: true,
+        }).start();
+    }, [animation]);
+
     return (
-        <>
-            <View style={{ alignItems: 'center', gap: 67, backgroundColor: 'white', flex: 1 }}>
-                <View style={{ width: '90%', alignContent: 'center', marginLeft: 40, marginTop: 120 }}>
-                    <Text style={styles.titleBig}>Welcome Back !</Text>
-                    <Text style={styles.titleSmall}>Login with Username & password</Text>
-                </View>
-
-                <View style={styles.wrapperInp}>
-                    <View style={{ gap: 12 }}>
-                        <Text style={styles.titleBtn}>Username</Text>
-                        <TextInput style={styles.inp} onChangeText={(value) => changesUser(value, 'email')} ></TextInput>
+        <form style={{ flex: 1 }}>
+            <Animated.View style={{ opacity: animation }}>
+                <View style={{ alignItems: 'center', gap: 67 }}>
+                    <View style={{ width: '90%', alignContent: 'center', marginLeft: 40, marginTop: 120 }}>
+                        <Text style={styles.titleBig}>Welcome Back !</Text>
+                        <Text style={styles.titleSmall}>Login with Username & password</Text>
                     </View>
-                    <View style={{ gap: 12 }}>
-                        <Text style={styles.titleBtn}>Password</Text>
-                        <TextInput style={styles.inp} onChangeText={(value) => changesUser(value, 'password')} secureTextEntry={true} ></TextInput>
-                    </View>
-                    <TouchableOpacity onPress={auth} style={styles.btn}><Text style={styles.titleSing}>SIGN IN</Text></TouchableOpacity>
-                </View>
 
-                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                    <Text style={[styles.textFooter, { color: '#000000' }]}>Create a new account? </Text>
-                    <Link href={'/singup'}><Text style={[styles.textFooter, { color: '#120EDB', textDecorationLine: 'underline', }]}>Sign Up</Text></Link>
-                </View>
-            </View >
-        </>
+                    <CreateInputForm inpForm={inpForm} nameBtn={'SIGN IN'} changesUser={changesUser} auth={auth} />
+
+                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                        <Text style={[styles.textFooter, { color: '#000000' }]}>Create a new account? </Text>
+                        <Link href={'/singup'}><Text style={[styles.textFooter, { color: '#120EDB', textDecorationLine: 'underline', }]}>Sign Up</Text></Link>
+                    </View>
+                </View >
+            </Animated.View>
+        </form>
     )
 }
 
@@ -63,43 +79,6 @@ const styles = StyleSheet.create({
         fontSize: 12,
         fontWeight: 400,
         color: '#606060'
-    },
-    wrapperInp: {
-        width: '90%',
-        alignContent: 'center',
-        borderRadius: 20,
-        borderColor: '#CECECE',
-        borderWidth: 3,
-        gap: 24,
-        paddingVertical: 36,
-        paddingHorizontal: 36
-    },
-    titleBtn: {
-        fontFamily: 'Inter',
-        fontSize: 14,
-        fontWeight: 700,
-        color: '#000000'
-    },
-    inp: {
-        borderRadius: 20,
-        borderColor: '#CECECE',
-        borderWidth: 2,
-        paddingHorizontal: 10,
-        paddingVertical: 10
-    },
-    btn: {
-        borderRadius: 40,
-        backgroundColor: '#F9EF05',
-        alignContent: 'center',
-        paddingHorizontal: 100,
-        paddingVertical: 16,
-        alignItems: 'center',
-    },
-    titleSing: {
-        fontFamily: 'Inter',
-        fontSize: 14,
-        fontWeight: 700,
-        color: '#D04444'
     },
     textFooter: {
         fontFamily: 'Inter',

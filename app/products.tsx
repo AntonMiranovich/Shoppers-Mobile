@@ -11,10 +11,10 @@ import { useRouter } from 'expo-router';
 function Products() {
     const router = useRouter()
 
-    return <View style={{ gap: 62, backgroundColor: 'white', flex: 1 }}>
+    return <View style={{ gap: 62,  flex: 1 }}>
         <Header />
         <View style={{ flexDirection: 'row', gap: 40, flexWrap: 'wrap', justifyContent: 'center' }}>
-            {storage.map((el: iProducts) => <View style={styles.item}>
+            {storage.map((el: iProducts) => <View key={el.id} style={styles.item}>
                 <Product />
                 <Text>{el?.title}</Text>
                 <Text>{el?.price}</Text>
