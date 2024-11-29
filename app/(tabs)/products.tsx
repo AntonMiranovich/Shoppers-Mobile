@@ -1,5 +1,5 @@
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import storage from '../storage'
+import storage from '../../storage'
 import { iProducts } from '@/interfaces';
 import Product from '@/assets/images/Product';
 import Header from '@/components/header';

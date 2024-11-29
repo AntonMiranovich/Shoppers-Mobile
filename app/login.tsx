@@ -1,7 +1,9 @@
 import CreateInputForm from "@/components/createInputForm";
-import { Link, useRouter } from "expo-router";
-import { useEffect, useState } from "react";
-import { StyleSheet, Text, View, Animated } from "react-native";
+import { useRouter } from "expo-router";
+import React from "react";
+import { useState } from "react";
+import { StyleSheet, Text, View, Animated, TouchableOpacity } from "react-native";
+import { useFocusEffect } from '@react-navigation/native'
 
 export default function login() {
     const inpForm = [
@@ -36,15 +38,30 @@ export default function login() {
         }
     }
 
-    const animation = new Animated.Value(0);
+    const animation = useState(new Animated.Value(0))[0]
 
-    useEffect(() => {
+    useFocusEffect(
+        React.useCallback(() => {
+            Animated.timing(animation, {
+                toValue: 1,
+                duration: 500,
+                useNativeDriver: true,
+            }).start();
+            return () => {
+                animation.setValue(0);
+            };
+        }, [animation]));
+
+    const handleSignUpPress = () => {
         Animated.timing(animation, {
-            toValue: 1,
-            duration: 1000,
+            toValue: 0,
+            duration: 500,
             useNativeDriver: true,
-        }).start();
-    }, [animation]);
+        }).start(() => {
+            router.push('/singup');
+        });
+    };
+
 
     return (
         <form style={{ flex: 1 }}>
@@ -59,7 +76,9 @@ export default function login() {
 
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                         <Text style={[styles.textFooter, { color: '#000000' }]}>Create a new account? </Text>
-                        <Link href={'/singup'}><Text style={[styles.textFooter, { color: '#120EDB', textDecorationLine: 'underline', }]}>Sign Up</Text></Link>
+                        <TouchableOpacity onPress={handleSignUpPress}>
+                            <Text style={[styles.textFooter, { color: '#120EDB', textDecorationLine: 'underline' }]}>Sign Up</Text>
+                        </TouchableOpacity>
                     </View>
                 </View >
             </Animated.View>

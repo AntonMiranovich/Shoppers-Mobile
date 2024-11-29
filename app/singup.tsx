@@ -1,7 +1,9 @@
 import CreateInputForm from "@/components/createInputForm";
-import { Link, useRouter } from "expo-router";
+import { useRouter } from "expo-router";
 import { useState } from "react";
-import { StyleSheet, Text, View } from "react-native";
+import React from "react";
+import { StyleSheet, Text, View, Animated, TouchableOpacity } from "react-native";
+import { useFocusEffect } from '@react-navigation/native'
 
 export default function singup() {
     const inpForm = [
@@ -41,9 +43,34 @@ export default function singup() {
         }
     }
 
+    const animation = useState(new Animated.Value(0))[0]
+
+    useFocusEffect(
+        React.useCallback(() => {
+            Animated.timing(animation, {
+                toValue: 1,
+                duration: 500,
+                useNativeDriver: true,
+            }).start();
+            return () => {
+                animation.setValue(0);
+            };
+        }, [animation]));
+
+    const handleSignUpPress = () => {
+        Animated.timing(animation, {
+            toValue: 0,
+            duration: 500,
+            useNativeDriver: true,
+        }).start(() => {
+            router.push('/login');
+        });
+    };
+
+
     return (
         <>
-            <View style={{ alignItems: 'center', gap: 67, flex: 1 }}>
+            <Animated.View style={{ opacity: animation, alignItems: 'center', gap: 67, flex: 1 }}>
                 <View style={{ width: '90%', alignContent: 'center', marginTop: 120, gap: '' }}>
                     <Text style={styles.titleBig}>Welcome!</Text>
                     <Text style={styles.titleSmall}>Create a new account</Text>
@@ -53,9 +80,11 @@ export default function singup() {
 
                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                     <Text style={[styles.textFooter, { color: '#000000' }]}>Already have an account? </Text>
-                    <Link href={'/login'}><Text style={[styles.textFooter, { color: '#120EDB', textDecorationLine: 'underline', }]}>Sign In </Text></Link>
+                    <TouchableOpacity onPress={handleSignUpPress}>
+                        <Text style={[styles.textFooter, { color: '#120EDB', textDecorationLine: 'underline' }]}>Sign Up</Text>
+                    </TouchableOpacity>
                 </View>
-            </View >
+            </Animated.View >
         </>
     )
 }
