@@ -1,7 +1,4 @@
 import { StyleSheet, Text, TouchableOpacity, View, Animated } from 'react-native';
-import storage from '../../storage'
-import { iProducts } from '@/interfaces';
-import Product from '@/assets/images/Product';
 import Header from '@/components/header';
 import ImgBack from '@/assets/images/ImgBack';
 import { useRouter } from 'expo-router';
@@ -38,35 +35,43 @@ function Products() {
     };
 
 
-    return <Animated.View style={{ opacity: animation, gap: 62, flex: 1 }}>
+    return <Animated.View style={{ opacity: animation, gap: '30%', flex: 1, }}>
         <Header />
-        <View style={{ flexDirection: 'row', gap: 40, flexWrap: 'wrap', justifyContent: 'center' }}>
-            {storage.map((el: iProducts) => <View key={el.id} style={styles.item}>
-                <Product />
-                <Text>{el?.title}</Text>
-                <Text>{el?.price}</Text>
-            </View>
-            )}
+        <View style={styles.wrapper}>
+            <Text style={styles.text}>Hello SIlva</Text>
+            <TouchableOpacity style={styles.btn}> <Text style={styles.titleSing}>SIGN OUT</Text> </TouchableOpacity>
         </View>
         <TouchableOpacity style={{ marginLeft: '10%' }} onPress={pressGoBack}><ImgBack /></TouchableOpacity>
     </Animated.View>;
 }
 
 const styles = StyleSheet.create({
-    item: {
-        width: '35%',
-        padding: 15,
-        height: 169,
-        borderRadius: 30,
-        shadowColor: '#000',
-        shadowOffset: {
-            width: 0,
-            height: 4
-        },
-        shadowOpacity: 0.25,
-        shadowRadius: 4,
-        elevation: 4
-    }
+    wrapper: {
+        width: '70%',
+        alignItems: 'center',
+        marginHorizontal: 'auto',
+        gap: 86
+    },
+    text: {
+        fontFamily: 'Inter',
+        fontWeight: 700,
+        fontSize: 32,
+        color: '#000'
+    },
+    btn: {
+        borderRadius: 40,
+        backgroundColor: '#F9EF05',
+        alignContent: 'center',
+        paddingHorizontal: 100,
+        paddingVertical: 16,
+        alignItems: 'center',
+    },
+    titleSing: {
+        fontFamily: 'Inter',
+        fontSize: 14,
+        fontWeight: 700,
+        color: '#D04444'
+    },
 })
 
 export default Products;

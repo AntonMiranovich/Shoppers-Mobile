@@ -1,7 +1,6 @@
 import CreateInputForm from "@/components/createInputForm";
 import { useRouter } from "expo-router";
-import { useState } from "react";
-import React from "react";
+import React, { useState } from "react";
 import { StyleSheet, Text, View, Animated, TouchableOpacity } from "react-native";
 import { useFocusEffect } from '@react-navigation/native'
 
@@ -37,7 +36,13 @@ export default function singup() {
             if (!user.name || !user.password || !user.email) throw new Error('одно из полей не заполнено')
             if (user.password.length < 8) throw new Error('пороль менее 8 символов')
 
-            router.push('/products')
+            Animated.timing(animation, {
+                toValue: 0,
+                duration: 500,
+                useNativeDriver: true,
+            }).start(() => {
+                router.push('/products');
+            });
         } catch (error: any) {
             console.log(error.message);
         }
@@ -57,7 +62,7 @@ export default function singup() {
             };
         }, [animation]));
 
-    const handleSignUpPress = () => {
+    const pressGoLogin = () => {
         Animated.timing(animation, {
             toValue: 0,
             duration: 500,
@@ -76,11 +81,11 @@ export default function singup() {
                     <Text style={styles.titleSmall}>Create a new account</Text>
                 </View>
 
-                <CreateInputForm inpForm={inpForm} nameBtn={'SIGN UP'} changesUser={changesUser} auth={auth} />
+                <CreateInputForm  inpForm={inpForm} nameBtn={'SIGN UP'} changesUser={changesUser} auth={auth} />
 
                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                     <Text style={[styles.textFooter, { color: '#000000' }]}>Already have an account? </Text>
-                    <TouchableOpacity onPress={handleSignUpPress}>
+                    <TouchableOpacity onPress={pressGoLogin}>
                         <Text style={[styles.textFooter, { color: '#120EDB', textDecorationLine: 'underline' }]}>Sign Up</Text>
                     </TouchableOpacity>
                 </View>

@@ -1,7 +1,6 @@
 import CreateInputForm from "@/components/createInputForm";
 import { useRouter } from "expo-router";
-import React from "react";
-import { useState } from "react";
+import React, { useState } from "react";
 import { StyleSheet, Text, View, Animated, TouchableOpacity } from "react-native";
 import { useFocusEffect } from '@react-navigation/native'
 
@@ -32,7 +31,13 @@ export default function login() {
             if (!user.username || !user.password) throw new Error('одно из полей не заполнено')
             if (user.password.length < 8) throw new Error('пороль менее 8 символов')
 
-            router.push('/products')
+            Animated.timing(animation, {
+                toValue: 0,
+                duration: 500,
+                useNativeDriver: true,
+            }).start(() => {
+                router.push('/products');
+            });
         } catch (error: any) {
             console.log(error.message);
         }
@@ -52,7 +57,7 @@ export default function login() {
             };
         }, [animation]));
 
-    const handleSignUpPress = () => {
+    const pressGoSignIn = () => {
         Animated.timing(animation, {
             toValue: 0,
             duration: 500,
@@ -64,8 +69,8 @@ export default function login() {
 
 
     return (
-        <form style={{ flex: 1 }}>
-            <Animated.View style={{ opacity: animation }}>
+        <>
+            <Animated.View style={{ opacity: animation, flex: 1 }}>
                 <View style={{ alignItems: 'center', gap: 67 }}>
                     <View style={{ width: '90%', alignContent: 'center', marginLeft: 40, marginTop: 120 }}>
                         <Text style={styles.titleBig}>Welcome Back !</Text>
@@ -76,13 +81,13 @@ export default function login() {
 
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                         <Text style={[styles.textFooter, { color: '#000000' }]}>Create a new account? </Text>
-                        <TouchableOpacity onPress={handleSignUpPress}>
+                        <TouchableOpacity onPress={pressGoSignIn}>
                             <Text style={[styles.textFooter, { color: '#120EDB', textDecorationLine: 'underline' }]}>Sign Up</Text>
                         </TouchableOpacity>
                     </View>
                 </View >
             </Animated.View>
-        </form>
+        </>
     )
 }
 
