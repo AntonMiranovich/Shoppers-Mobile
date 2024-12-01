@@ -70,7 +70,7 @@ const styles = StyleSheet.create({
         fontFamily: 'Inter',
         fontSize: 14,
         fontWeight: 700,
-        color: '#D04444'
+        color: '#000000'
     },
 })
 

@@ -8,23 +8,39 @@ export default function index() {
 
     const animation = useState(new Animated.Value(0))[0]
 
-    useEffect(() => {
-        Animated.timing(animation, {
-            toValue: 1,
-            duration: 1000,
-            useNativeDriver: true,
-        }).start(() => {
-            setTimeout(() => {
-                Animated.timing(animation, {
-                    toValue: 0,
-                    duration: 1000,
-                    useNativeDriver: true,
-                }).start(() => {
-                    router.replace('/login');
-                });
-            }, 2000);
-        });
-    }, [animation, router]);
+    Animated.timing(animation, {
+        toValue: 1,
+        duration: 1000,
+        useNativeDriver: true,
+    }).start(() => {
+        setTimeout(() => {
+            Animated.timing(animation, {
+                toValue: 0,
+                duration: 1000,
+                useNativeDriver: true,
+            }).start(() => {
+                router.replace('/login');
+            });
+        }, 2000);
+    });
+
+    // useEffect(() => {
+    //     Animated.timing(animation, {
+    //         toValue: 1,
+    //         duration: 1000,
+    //         useNativeDriver: true,
+    //     }).start(() => {
+    //         setTimeout(() => {
+    //             Animated.timing(animation, {
+    //                 toValue: 0,
+    //                 duration: 1000,
+    //                 useNativeDriver: true,
+    //             }).start(() => {
+    //                 router.replace('/login');
+    //             });
+    //         }, 2000);
+    //     });
+    // }, [animation, router]);
 
 
     return (
