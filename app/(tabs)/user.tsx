@@ -1,6 +1,5 @@
 import { StyleSheet, Text, TouchableOpacity, View, Animated } from 'react-native';
 import Header from '@/components/header';
-import ImgBack from '@/assets/images/ImgBack';
 import { useRouter } from 'expo-router';
 import { useFocusEffect } from '@react-navigation/native'
 import React, { useState } from "react";
@@ -8,7 +7,6 @@ import React, { useState } from "react";
 
 
 function Products() {
-    const router = useRouter()
 
     const animation = useState(new Animated.Value(0))[0]
 
@@ -24,15 +22,6 @@ function Products() {
             };
         }, [animation]));
 
-    const pressGoBack = () => {
-        Animated.timing(animation, {
-            toValue: 0,
-            duration: 500,
-            useNativeDriver: true,
-        }).start(() => {
-            router.back()
-        });
-    };
 
 
     return <Animated.View style={{ opacity: animation, gap: '30%', flex: 1, }}>
@@ -41,7 +30,6 @@ function Products() {
             <Text style={styles.text}>Hello SIlva</Text>
             <TouchableOpacity style={styles.btn}> <Text style={styles.titleSing}>SIGN OUT</Text> </TouchableOpacity>
         </View>
-        <TouchableOpacity style={{ marginLeft: '10%' }} onPress={pressGoBack}><ImgBack /></TouchableOpacity>
     </Animated.View>;
 }
 

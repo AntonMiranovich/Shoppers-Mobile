@@ -1,7 +1,7 @@
 import { StyleSheet, Text, TouchableOpacity, Animated } from "react-native";
 import ImgPrew from '../assets/images/prewiu'
 import { useRouter } from "expo-router";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 export default function index() {
     const router = useRouter()
@@ -24,29 +24,10 @@ export default function index() {
         }, 2000);
     });
 
-    // useEffect(() => {
-    //     Animated.timing(animation, {
-    //         toValue: 1,
-    //         duration: 1000,
-    //         useNativeDriver: true,
-    //     }).start(() => {
-    //         setTimeout(() => {
-    //             Animated.timing(animation, {
-    //                 toValue: 0,
-    //                 duration: 1000,
-    //                 useNativeDriver: true,
-    //             }).start(() => {
-    //                 router.replace('/login');
-    //             });
-    //         }, 2000);
-    //     });
-    // }, [animation, router]);
-
-
     return (
         <>
             <Animated.View style={{ opacity: animation, flex: 1 }}>
-                <TouchableOpacity onPress={() => router.replace('/login')} style={styles.container}>
+                <TouchableOpacity  style={styles.container}>
                     <Text style={styles.titlePrew}>WELCOME TO SHOPPERS</Text>
                     <ImgPrew></ImgPrew>
                 </TouchableOpacity>

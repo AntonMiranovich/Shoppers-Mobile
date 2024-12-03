@@ -3,7 +3,6 @@ import storage from '../../storage'
 import { iProducts } from '@/interfaces';
 import Product from '@/assets/images/Product';
 import Header from '@/components/header';
-import ImgBack from '@/assets/images/ImgBack';
 import { useRouter } from 'expo-router';
 import { useFocusEffect } from '@react-navigation/native'
 import React, { useState } from "react";
@@ -27,28 +26,19 @@ function Products() {
             };
         }, [animation]));
 
-    const pressGoBack = () => {
-        Animated.timing(animation, {
-            toValue: 0,
-            duration: 500,
-            useNativeDriver: true,
-        }).start(() => {
-            router.back()
-        });
-    };
 
 
     return <Animated.View style={{ opacity: animation, gap: 62, flex: 1 }}>
         <Header />
         <View style={{ flexDirection: 'row', gap: 40, flexWrap: 'wrap', justifyContent: 'center' }}>
-            {storage.map((el: iProducts) => <View key={el.id} style={styles.item}>
-                <Product />
+            {storage.map((el: iProducts) => <TouchableOpacity style={styles.item} key={el.id} onPress={() => router.replace(`/detail/${el.id}`)}>
+                <Product width={'100%'} height={112} />
                 <Text>{el?.title}</Text>
                 <Text>{el?.price}</Text>
-            </View>
+
+            </TouchableOpacity>
             )}
         </View>
-        <TouchableOpacity style={{ marginLeft: '10%' }} onPress={pressGoBack}><ImgBack /></TouchableOpacity>
     </Animated.View>;
 }
 

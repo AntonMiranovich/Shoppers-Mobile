@@ -9,6 +9,7 @@ export default function RootLayout() {
       <Stack.Screen name="/" />
       <Stack.Screen name="/login" />
       <Stack.Screen name="/singup" />
+      <Stack.Screen name="/detail" />
       <Stack.Screen name="/(tabs)" />
       <Stack.Screen name="+not-found" />
     </Stack>

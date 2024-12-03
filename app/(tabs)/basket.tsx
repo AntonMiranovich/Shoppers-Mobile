@@ -1,29 +1,13 @@
 import { StyleSheet, Text, TouchableOpacity, View, Animated } from 'react-native';
 import Header from '@/components/header';
-import ImgBack from '@/assets/images/ImgBack';
-import { useRouter } from 'expo-router';
 import { useFocusEffect } from '@react-navigation/native'
 import React, { useState } from "react";
 import Product from '@/assets/images/Product';
+import basket from '../../storage/basket'
 
 
 function Products() {
-    const router = useRouter()
 
-    const obj = [
-        {
-            id: 1,
-            title: 'Adidas Shoe',
-            price: 20000,
-            Qty: 1
-        },
-        {
-            id: 2,
-            title: 'Adidas Shoe',
-            price: 20000,
-            Qty: 1
-        },
-    ]
 
     const animation = useState(new Animated.Value(0))[0]
 
@@ -39,27 +23,19 @@ function Products() {
             };
         }, [animation]));
 
-    const pressGoBack = () => {
-        Animated.timing(animation, {
-            toValue: 0,
-            duration: 500,
-            useNativeDriver: true,
-        }).start(() => {
-            router.back()
-        });
-    };
+
 
 
     return <Animated.View style={{ opacity: animation, flex: 1, alignItems: 'center', gap: 62 }}>
         <Header />
-        
+
         <View style={{ width: '80%', gap: 62 }}>
             <View style={{ gap: 40, flexWrap: 'wrap', justifyContent: 'center' }}>
-                {obj.map((el) => <View key={el.id} style={styles.item}>
-                    <Product />
+                {basket.map((el) => <View key={el.id} style={styles.item}>
+                    <Product width={136} height={117} />
                     <View style={{ gap: 13 }}>
                         <Text style={styles.text}>{el?.title}</Text>
-                        <Text style={styles.textSmall}>Qty: {el.Qty}</Text>
+                        <Text style={styles.textSmall}>Qty: 1</Text>
                         <Text style={styles.text}>Rs. {el?.price}</Text>
                     </View>
                 </View>
@@ -75,7 +51,6 @@ function Products() {
             </View>
 
             <TouchableOpacity style={styles.btn}> <Text style={styles.titleSing}>CHECKOUT</Text> </TouchableOpacity>
-            <TouchableOpacity onPress={pressGoBack}><ImgBack /></TouchableOpacity>
         </View>
     </Animated.View>;
 }

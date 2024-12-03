@@ -3,8 +3,8 @@ import Svg, { Path, Defs, Pattern, Use, Image } from "react-native-svg"
 function Product(props: any) {
     return (
         <Svg
-            width={111}
-            height={112}
+            width={props.width}
+            height={props.height}
             viewBox="0 0 111 112"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
