@@ -46,7 +46,7 @@ function Products() {
                 <View style={styles.vector} />
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                     <Text style={styles.textTotal}>Total :</Text>
-                    <Text style={styles.textTotal}>Rs.40000.00</Text>
+                    <Text style={styles.textTotal}>Rs.  {basket.reduce((sum, el: any) => sum + el.price, 0)}</Text>
                 </View>
             </View>
 

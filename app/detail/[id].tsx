@@ -25,23 +25,23 @@ export default function Detail() {
 
     return (
         <>
-            <View style={{ gap: 30 }}>
+            <View style={{ gap: 40, alignItems: 'center' }}>
                 <View >
                     <Product width={'100%'} height={390} />
-                    <View style={{ position: 'absolute', flexDirection: 'row', justifyContent: 'space-between', width: "85%", marginTop: 52, marginLeft: 30 }}>
+                    <View style={{ position: 'absolute', flexDirection: 'row', justifyContent: 'space-between', width: "90%", marginTop: 52, marginLeft: 15 }}>
                         <TouchableOpacity onPress={() => router.replace('/products')}><ImgBack /></TouchableOpacity>
                         <Share />
                     </View>
                 </View>
 
-                <View style={{ gap: 14, marginBottom: 38, width: '80%', alignSelf: 'center' }}>
+                <View style={{ gap: 14, marginBottom: 30, width: '80%', alignSelf: 'center' }}>
                     <Text style={styles.text}>{product[0]?.title}</Text>
                     <Text style={styles.text}>Rs.{product[0]?.price}</Text>
                 </View>
 
                 <TouchableOpacity style={styles.btn} onPress={addBascet}> <Text style={styles.titleSing}>Add to Cart</Text> </TouchableOpacity>
 
-                <View>
+                <View style={{ width: '90%',gap:16 }}>
                     <Text style={{ ...styles.titleSing, color: '#000000' }}>More Details</Text>
                     <Text style={styles.textInfo}>Gear up with the latest collections from
                         adidas Originals, Running, Football, Training.
@@ -78,6 +78,8 @@ const styles = StyleSheet.create({
         color: '#4D1717'
     },
     textInfo: {
+        width:'90%',
+        marginLeft:20,
         fontFamily: 'Inter',
         fontSize: 14,
         fontWeight: 300,
