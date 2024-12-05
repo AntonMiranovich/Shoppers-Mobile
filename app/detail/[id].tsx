@@ -1,11 +1,12 @@
 import ImgBack from "@/assets/images/ImgBack";
 import Share from "@/assets/images/share";
 import Product from "@/assets/images/Product";
-import { StyleSheet, Text, TouchableOpacity, View, } from "react-native";
+import { StyleSheet, Text, TouchableOpacity, View, Animated } from "react-native";
 import { useLocalSearchParams, useRouter } from "expo-router/build/hooks";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import storage from '../../storage/index'
 import basket from '../../storage/basket'
+import { useFocusEffect } from '@react-navigation/native'
 
 export default function Detail() {
     const params: any = useLocalSearchParams()
@@ -18,14 +19,35 @@ export default function Detail() {
         setProduct(filterStorage)
     }, [])
 
+    const animation = useState(new Animated.Value(0))[0]
+
+    useFocusEffect(
+        React.useCallback(() => {
+            Animated.timing(animation, {
+                toValue: 1,
+                duration: 500,
+                useNativeDriver: true,
+            }).start();
+            return () => {
+                animation.setValue(0);
+            };
+        }, [animation]));
+
+
     const addBascet = () => {
-        basket.push(product[0])
-        router.replace('/basket')
+        Animated.timing(animation, {
+            toValue: 0,
+            duration: 500,
+            useNativeDriver: true,
+        }).start(() => {
+            basket.push(product[0])
+            router.replace('/basket')
+        });
     }
 
     return (
         <>
-            <View style={{ gap: 40, alignItems: 'center' }}>
+            <Animated.View style={{ opacity: animation, gap: 40, alignItems: 'center' }}>
                 <View >
                     <Product width={'100%'} height={390} />
                     <View style={{ position: 'absolute', flexDirection: 'row', justifyContent: 'space-between', width: "90%", marginTop: 52, marginLeft: 15 }}>
@@ -41,7 +63,7 @@ export default function Detail() {
 
                 <TouchableOpacity style={styles.btn} onPress={addBascet}> <Text style={styles.titleSing}>Add to Cart</Text> </TouchableOpacity>
 
-                <View style={{ width: '90%',gap:16 }}>
+                <View style={{ width: '90%', gap: 16 }}>
                     <Text style={{ ...styles.titleSing, color: '#000000' }}>More Details</Text>
                     <Text style={styles.textInfo}>Gear up with the latest collections from
                         adidas Originals, Running, Football, Training.
@@ -50,7 +72,7 @@ export default function Detail() {
                         Secure Payments. 100% Original Products.
                         Gear up with adidas.</Text>
                 </View>
-            </View>
+            </Animated.View>
         </>
     )
 }
@@ -78,8 +100,8 @@ const styles = StyleSheet.create({
         color: '#4D1717'
     },
     textInfo: {
-        width:'90%',
-        marginLeft:20,
+        width: '90%',
+        marginLeft: 20,
         fontFamily: 'Inter',
         fontSize: 14,
         fontWeight: 300,

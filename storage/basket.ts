@@ -1,5 +1,7 @@
 import { iProducts } from "@/interfaces"
 
-const arr: iProducts[] = []
+let arr: iProducts[] = []
+
+export const deleteFromStorage = (index: number) => arr.splice(index, 1);
 
 export default arr

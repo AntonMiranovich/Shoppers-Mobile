@@ -1,15 +1,19 @@
 import { StyleSheet, Text, TouchableOpacity, View, Animated } from 'react-native';
 import Header from '@/components/header';
 import { useFocusEffect } from '@react-navigation/native'
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Product from '@/assets/images/Product';
-import basket from '../../storage/basket'
+import basketStorage, { deleteFromStorage } from '../../storage/basket'
+import DelImg from '../../assets/images/delImg'
+import { iProducts } from '@/interfaces';
 
 
 function Products() {
-
-
+    const [basket, setBasket] = useState<iProducts[]>([]);
+    const [flagForUpdate, setFlagForUpdate] = useState(false);
     const animation = useState(new Animated.Value(0))[0]
+
+    useEffect(() => { setBasket(basketStorage); }, [flagForUpdate]);
 
     useFocusEffect(
         React.useCallback(() => {
@@ -24,6 +28,10 @@ function Products() {
         }, [animation]));
 
 
+    const deleteFromBasket = (index: number) => {
+        deleteFromStorage(index);
+        setFlagForUpdate(!flagForUpdate)
+    };
 
 
     return <Animated.View style={{ opacity: animation, flex: 1, alignItems: 'center', gap: 62 }}>
@@ -31,13 +39,14 @@ function Products() {
 
         <View style={{ width: '80%', gap: 62 }}>
             <View style={{ gap: 40, flexWrap: 'wrap', justifyContent: 'center' }}>
-                {basket.map((el) => <View key={el.id} style={styles.item}>
+                {basket.map((el, index) => <View key={index} style={styles.item}>
                     <Product width={136} height={117} />
                     <View style={{ gap: 13 }}>
                         <Text style={styles.text}>{el?.title}</Text>
                         <Text style={styles.textSmall}>Qty: 1</Text>
                         <Text style={styles.text}>Rs. {el?.price}</Text>
                     </View>
+                    <TouchableOpacity onPress={() => deleteFromBasket(index)} style={styles.imgDel}> <DelImg /></TouchableOpacity>
                 </View>
                 )}
             </View>
@@ -54,6 +63,7 @@ function Products() {
         </View>
     </Animated.View>;
 }
+
 
 const styles = StyleSheet.create({
     btn: {
@@ -72,6 +82,7 @@ const styles = StyleSheet.create({
         color: '#000000'
     },
     item: {
+        position: 'relative',
         flexDirection: 'row',
         gap: 40,
         alignItems: 'center',
@@ -111,6 +122,11 @@ const styles = StyleSheet.create({
         fontWeight: 700,
         color: 'black'
     },
+    imgDel: {
+        position: 'absolute',
+        top: 15,
+        right: 15,
+    }
 })
 
 export default Products;

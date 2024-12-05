@@ -1,4 +1,4 @@
-import { StyleSheet, Text, TouchableOpacity, Animated } from "react-native";
+import { StyleSheet, Text, TouchableOpacity, Animated, View } from "react-native";
 import ImgPrew from '../assets/images/prewiu'
 import { useRouter } from "expo-router";
 import { useState } from "react";
@@ -27,10 +27,10 @@ export default function index() {
     return (
         <>
             <Animated.View style={{ opacity: animation, flex: 1 }}>
-                <TouchableOpacity  style={styles.container}>
+                <View  style={styles.container}>
                     <Text style={styles.titlePrew}>WELCOME TO SHOPPERS</Text>
                     <ImgPrew></ImgPrew>
-                </TouchableOpacity>
+                </View>
             </Animated.View>
         </>
     )
