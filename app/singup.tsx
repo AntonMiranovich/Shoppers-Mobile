@@ -41,7 +41,7 @@ export default function singup() {
                 duration: 500,
                 useNativeDriver: true,
             }).start(() => {
-                router.push('/products');
+                router.push('/login');
             });
         } catch (error: any) {
             console.log(error.message);

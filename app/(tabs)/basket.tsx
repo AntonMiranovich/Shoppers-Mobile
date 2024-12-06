@@ -6,14 +6,18 @@ import Product from '@/assets/images/Product';
 import basketStorage, { deleteFromStorage } from '../../storage/basket'
 import DelImg from '../../assets/images/delImg'
 import { iProducts } from '@/interfaces';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 
 
 function Products() {
     const [basket, setBasket] = useState<iProducts[]>([]);
-    const [flagForUpdate, setFlagForUpdate] = useState(false);
+    // const [flagForUpdate, setFlagForUpdate] = useState(false);
     const animation = useState(new Animated.Value(0))[0]
 
-    useEffect(() => { setBasket(basketStorage); }, [flagForUpdate]);
+    // useEffect(() => { setBasket(basketStorage); }, [flagForUpdate]);
+
+
 
     useFocusEffect(
         React.useCallback(() => {
@@ -28,10 +32,24 @@ function Products() {
         }, [animation]));
 
 
-    const deleteFromBasket = (index: number) => {
-        deleteFromStorage(index);
-        setFlagForUpdate(!flagForUpdate)
-    };
+    const loadBasket = async () => {
+        const gettingData = await AsyncStorage.getItem('prod')
+        if (!gettingData) return
+        const parsedGettingData = JSON.parse(gettingData)
+        if (Array.isArray(parsedGettingData)) {
+            setBasket(parsedGettingData);
+            console.log('success get', parsedGettingData);
+        }
+    }
+
+    useEffect(() => {
+        loadBasket()
+    }, [])
+
+    // const deleteFromBasket = (index: number) => {
+    //     deleteFromStorage(index);
+    //     setFlagForUpdate(!flagForUpdate)
+    // };
 
 
     return <Animated.View style={{ opacity: animation, flex: 1, alignItems: 'center', gap: 62 }}>
@@ -46,7 +64,8 @@ function Products() {
                         <Text style={styles.textSmall}>Qty: 1</Text>
                         <Text style={styles.text}>Rs. {el?.price}</Text>
                     </View>
-                    <TouchableOpacity onPress={() => deleteFromBasket(index)} style={styles.imgDel}> <DelImg /></TouchableOpacity>
+                    <TouchableOpacity style={styles.imgDel}> <DelImg /></TouchableOpacity>
+                    {/* <TouchableOpacity onPress={() => deleteFromBasket(index)} style={styles.imgDel}> <DelImg /></TouchableOpacity> */}
                 </View>
                 )}
             </View>

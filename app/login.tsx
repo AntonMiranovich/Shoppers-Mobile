@@ -36,7 +36,7 @@ export default function login() {
                 duration: 500,
                 useNativeDriver: true,
             }).start(() => {
-                router.push('/products');
+                router.push('/user');
             });
         } catch (error: any) {
             console.log(error.message);

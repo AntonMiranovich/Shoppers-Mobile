@@ -7,6 +7,8 @@ import React, { useEffect, useState } from "react";
 import storage from '../../storage/index'
 import basket from '../../storage/basket'
 import { useFocusEffect } from '@react-navigation/native'
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 
 export default function Detail() {
     const params: any = useLocalSearchParams()
@@ -39,9 +41,18 @@ export default function Detail() {
             toValue: 0,
             duration: 500,
             useNativeDriver: true,
-        }).start(() => {
-            basket.push(product[0])
-            router.replace('/basket')
+        }).start(async () => {
+            // basket.push(product[0])
+            // router.replace('/basket')
+            try {
+                const gettingData: any = await AsyncStorage.getItem('prod')
+                const products = JSON.parse(gettingData) || [];
+                products.push(product[0]);
+                await AsyncStorage.setItem('prod', JSON.stringify(products))
+                router.replace('/basket')
+            } catch (error: any) {
+                console.error(error.message)
+            }
         });
     }
 

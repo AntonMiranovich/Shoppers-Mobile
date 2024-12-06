@@ -7,7 +7,7 @@ import React, { useState } from "react";
 
 
 function Products() {
-
+    const router = useRouter()
     const animation = useState(new Animated.Value(0))[0]
 
     useFocusEffect(
@@ -28,7 +28,7 @@ function Products() {
         <Header />
         <View style={styles.wrapper}>
             <Text style={styles.text}>Hello SIlva</Text>
-            <TouchableOpacity style={styles.btn}> <Text style={styles.titleSing}>SIGN OUT</Text> </TouchableOpacity>
+            <TouchableOpacity onPress={() => router.replace('/login')} style={styles.btn}> <Text style={styles.titleSing}>SIGN OUT</Text> </TouchableOpacity>
         </View>
     </Animated.View>;
 }
