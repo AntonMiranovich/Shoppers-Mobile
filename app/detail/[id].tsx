@@ -5,7 +5,6 @@ import { StyleSheet, Text, TouchableOpacity, View, Animated } from "react-native
 import { useLocalSearchParams, useRouter } from "expo-router/build/hooks";
 import React, { useEffect, useState } from "react";
 import storage from '../../storage/index'
-import basket from '../../storage/basket'
 import { useFocusEffect } from '@react-navigation/native'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -42,8 +41,6 @@ export default function Detail() {
             duration: 500,
             useNativeDriver: true,
         }).start(async () => {
-            // basket.push(product[0])
-            // router.replace('/basket')
             try {
                 const gettingData: any = await AsyncStorage.getItem('prod')
                 const products = JSON.parse(gettingData) || [];

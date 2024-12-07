@@ -41,7 +41,7 @@ export default function singup() {
                 duration: 500,
                 useNativeDriver: true,
             }).start(() => {
-                router.push('/login');
+                router.push('/user');
             });
         } catch (error: any) {
             console.log(error.message);
@@ -76,12 +76,12 @@ export default function singup() {
     return (
         <>
             <Animated.View style={{ opacity: animation, alignItems: 'center', gap: 67, flex: 1 }}>
-                <View style={{ width: '90%', alignContent: 'center', marginTop: 120, gap: '' }}>
+                <View style={{ width: '90%', alignContent: 'center', marginTop: 120 }}>
                     <Text style={styles.titleBig}>Welcome!</Text>
                     <Text style={styles.titleSmall}>Create a new account</Text>
                 </View>
 
-                <CreateInputForm  inpForm={inpForm} nameBtn={'SIGN UP'} changesUser={changesUser} auth={auth} />
+                <CreateInputForm inpForm={inpForm} nameBtn={'SIGN UP'} changesUser={changesUser} auth={auth} />
 
                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                     <Text style={[styles.textFooter, { color: '#000000' }]}>Already have an account? </Text>
