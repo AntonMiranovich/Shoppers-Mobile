@@ -1,17 +1,19 @@
-import { StyleSheet, Text, TouchableOpacity, View, Animated } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View, Animated, ScrollView } from 'react-native';
 import Header from '@/components/header';
 import { useFocusEffect } from '@react-navigation/native'
 import React, { useEffect, useState } from "react";
-import Product from '@/assets/images/Product';
 import DelImg from '../../assets/images/delImg'
 import { iProducts } from '@/interfaces';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import storage from '../../storage/index'
+
 
 
 
 function Products() {
     const [basket, setBasket] = useState<iProducts[]>([]);
     const animation = useState(new Animated.Value(0))[0]
+    const [indexItem, setIndexItem] = useState(0)
 
 
 
@@ -33,7 +35,8 @@ function Products() {
         if (!gettingData) return
         const parsedGettingData = JSON.parse(gettingData)
         if (Array.isArray(parsedGettingData)) {
-            setBasket(parsedGettingData);
+            setIndexItem(storage.findIndex((el) => el.id == parsedGettingData[0].id))
+            setBasket(parsedGettingData)
         }
     }
 
@@ -61,10 +64,10 @@ function Products() {
     return <Animated.View style={{ opacity: animation, flex: 1, alignItems: 'center', gap: 62 }}>
         <Header />
 
-        <View style={{ width: '80%', gap: 62 }}>
-            <View style={{ gap: 40, flexWrap: 'wrap', justifyContent: 'center' }}>
+        <ScrollView style={{ width: '100%' }}>
+            <View style={{ gap: 40, flexWrap: 'wrap', justifyContent: 'center', width: '80%', marginLeft: '10%' }}>
                 {basket.map((el, index) => <View key={index} style={styles.item}>
-                    <Product width={136} height={117} />
+                    {storage[indexItem]?.img}
                     <View style={{ gap: 13 }}>
                         <Text style={styles.text}>{el?.title}</Text>
                         <Text style={styles.textSmall}>Qty: 1</Text>
@@ -75,7 +78,7 @@ function Products() {
                 )}
             </View>
 
-            <View style={{ gap: 29 }}>
+            <View style={{ gap: 29, width: '80%', marginLeft: '10%', marginVertical: 62 }}>
                 <View style={styles.vector} />
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                     <Text style={styles.textTotal}>Total :</Text>
@@ -84,7 +87,7 @@ function Products() {
             </View>
 
             <TouchableOpacity style={styles.btn}> <Text style={styles.titleSing}>CHECKOUT</Text> </TouchableOpacity>
-        </View>
+        </ScrollView>
     </Animated.View>;
 }
 
@@ -98,6 +101,9 @@ const styles = StyleSheet.create({
         paddingHorizontal: 100,
         paddingVertical: 16,
         alignItems: 'center',
+        marginBottom: 50,
+        width: '80%',
+        marginLeft: '10%',
     },
     titleSing: {
         fontFamily: 'Inter',

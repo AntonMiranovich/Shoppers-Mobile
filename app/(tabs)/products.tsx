@@ -1,7 +1,6 @@
 import { StyleSheet, Text, TouchableOpacity, View, Animated } from 'react-native';
 import storage from '../../storage'
 import { iProducts } from '@/interfaces';
-import Product from '@/assets/images/Product';
 import Header from '@/components/header';
 import { useRouter } from 'expo-router';
 import { useFocusEffect } from '@react-navigation/native'
@@ -24,7 +23,9 @@ function Products() {
             return () => {
                 animation.setValue(0);
             };
+            
         }, [animation]));
+
 
 
 
@@ -32,9 +33,9 @@ function Products() {
         <Header />
         <View style={{ flexDirection: 'row', gap: 40, flexWrap: 'wrap', justifyContent: 'center' }}>
             {storage.map((el: iProducts) => <TouchableOpacity style={styles.item} key={el.id} onPress={() => router.replace(`/detail/${el.id}`)}>
-                <Product width={'100%'} height={112} />
-                <Text>{el?.title}</Text>
-                <Text>{el?.price}</Text>
+                {el?.img}
+                <Text style={{ textAlign: 'center' }}>{el?.title}</Text>
+                <Text style={{ textAlign: 'center' }}>{el?.price}</Text>
 
             </TouchableOpacity>
             )}
@@ -44,8 +45,7 @@ function Products() {
 
 const styles = StyleSheet.create({
     item: {
-        width: '35%',
-        padding: 15,
+        width: 134,
         height: 169,
         borderRadius: 30,
         shadowColor: '#000',
