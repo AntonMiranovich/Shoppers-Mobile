@@ -23,7 +23,7 @@ function Products() {
             return () => {
                 animation.setValue(0);
             };
-            
+
         }, [animation]));
 
 
@@ -34,9 +34,8 @@ function Products() {
         <View style={{ flexDirection: 'row', gap: 40, flexWrap: 'wrap', justifyContent: 'center' }}>
             {storage.map((el: iProducts) => <TouchableOpacity style={styles.item} key={el.id} onPress={() => router.replace(`/detail/${el.id}`)}>
                 {el?.img}
-                <Text style={{ textAlign: 'center' }}>{el?.title}</Text>
+                <Text style={{ textAlign: 'center', marginTop: 10 }}>{el?.title}</Text>
                 <Text style={{ textAlign: 'center' }}>{el?.price}</Text>
-
             </TouchableOpacity>
             )}
         </View>

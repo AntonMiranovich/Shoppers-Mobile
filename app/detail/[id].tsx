@@ -1,6 +1,5 @@
 import ImgBack from "@/assets/images/ImgBack";
 import Share from "@/assets/images/share";
-import Product from "@/assets/images/Product";
 import { StyleSheet, Text, TouchableOpacity, View, Animated } from "react-native";
 import { useLocalSearchParams, useRouter } from "expo-router/build/hooks";
 import React, { useEffect, useState } from "react";
@@ -57,7 +56,9 @@ export default function Detail() {
         <>
             <Animated.View style={{ opacity: animation, gap: 40, alignItems: 'center' }}>
                 <View >
-                    {product[0]?.img}
+                    <View style={{ height: 370 }}>
+                        {product[0]?.img}
+                    </View>
                     <View style={{ position: 'absolute', flexDirection: 'row', justifyContent: 'space-between', width: "90%", marginTop: 52, marginLeft: 15 }}>
                         <TouchableOpacity onPress={() => router.replace('/products')}><ImgBack /></TouchableOpacity>
                         <Share />

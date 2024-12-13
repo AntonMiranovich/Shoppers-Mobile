@@ -3,6 +3,7 @@ import { useRouter } from "expo-router";
 import React, { useState } from "react";
 import { StyleSheet, Text, View, Animated, TouchableOpacity } from "react-native";
 import { useFocusEffect } from '@react-navigation/native'
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function login() {
     const inpForm = [
@@ -35,7 +36,8 @@ export default function login() {
                 toValue: 0,
                 duration: 500,
                 useNativeDriver: true,
-            }).start(() => {
+            }).start(async () => {
+                await AsyncStorage.setItem('login', JSON.stringify(user.username))
                 router.push('/user');
             });
         } catch (error: any) {

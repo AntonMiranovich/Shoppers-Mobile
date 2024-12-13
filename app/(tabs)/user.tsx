@@ -2,13 +2,15 @@ import { StyleSheet, Text, TouchableOpacity, View, Animated } from 'react-native
 import Header from '@/components/header';
 import { useRouter } from 'expo-router';
 import { useFocusEffect } from '@react-navigation/native'
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 
 function Products() {
     const router = useRouter()
     const animation = useState(new Animated.Value(0))[0]
+    const [login, setLogin] = useState('')
 
     useFocusEffect(
         React.useCallback(() => {
@@ -22,12 +24,21 @@ function Products() {
             };
         }, [animation]));
 
+    const loadPages = async () => {
+        const loginUser: any = await AsyncStorage.getItem('login')
+        setLogin(JSON.parse(loginUser))
+    }
+
+    useEffect(() => {
+        loadPages()
+    }, [])
+
 
 
     return <Animated.View style={{ opacity: animation, gap: '30%', flex: 1, }}>
         <Header />
         <View style={styles.wrapper}>
-            <Text style={styles.text}>Hello SIlva</Text>
+            <Text style={styles.text}>Hello {login}</Text>
             <TouchableOpacity onPress={() => router.replace('/login')} style={styles.btn}> <Text style={styles.titleSing}>SIGN OUT</Text> </TouchableOpacity>
         </View>
     </Animated.View>;

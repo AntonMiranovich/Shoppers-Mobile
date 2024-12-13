@@ -13,10 +13,8 @@ import storage from '../../storage/index'
 function Products() {
     const [basket, setBasket] = useState<iProducts[]>([]);
     const animation = useState(new Animated.Value(0))[0]
-    const [indexItem, setIndexItem] = useState(0)
 
-
-
+    
     useFocusEffect(
         React.useCallback(() => {
             Animated.timing(animation, {
@@ -31,24 +29,38 @@ function Products() {
 
 
     const loadBasket = async () => {
-        const gettingData = await AsyncStorage.getItem('prod')
-        if (!gettingData) return
-        const parsedGettingData = JSON.parse(gettingData)
-        if (Array.isArray(parsedGettingData)) {
-            setIndexItem(storage.findIndex((el) => el.id == parsedGettingData[0].id))
-            setBasket(parsedGettingData)
+        const exitingProducts = await AsyncStorage.getItem('prod')
+        const parsed = exitingProducts && JSON.parse(exitingProducts) || []
+        const result = [];
+        for (let i = 0; i < storage.length; i++) {
+            for (let a = 0; a < parsed.length; a++) {
+                if (storage[i].id == parsed[a].id) {
+                    result.push(storage[i])
+                }
+            }
+
         }
+        setBasket(result)
     }
 
     const deleteFromBasket = async (index: number) => {
         try {
             const gettingData = await AsyncStorage.getItem('prod');
             if (!gettingData) return;
-            const parsedGettingData = JSON.parse(gettingData);
+            const parsedGettingData = gettingData && JSON.parse(gettingData) || [];
             if (Array.isArray(parsedGettingData)) {
                 const newArray = [...parsedGettingData.slice(0, index), ...parsedGettingData.slice(index + 1)];
                 await AsyncStorage.setItem('prod', JSON.stringify(newArray));
-                setBasket(newArray);
+                const result = [];
+                for (let i = 0; i < storage.length; i++) {
+                    for (let a = 0; a < newArray.length; a++) {
+                        if (storage[i].id == newArray[a].id) {
+                            result.push(storage[i])
+                        }
+                    }
+        
+                }
+                setBasket(result)
             }
         } catch (error: any) {
             console.error(error.message);
@@ -67,7 +79,9 @@ function Products() {
         <ScrollView style={{ width: '100%' }}>
             <View style={{ gap: 40, flexWrap: 'wrap', justifyContent: 'center', width: '80%', marginLeft: '10%' }}>
                 {basket.map((el, index) => <View key={index} style={styles.item}>
-                    {storage[indexItem]?.img}
+                    <View style={{  width: 140, }}>
+                        {el?.img}
+                    </View>
                     <View style={{ gap: 13 }}>
                         <Text style={styles.text}>{el?.title}</Text>
                         <Text style={styles.textSmall}>Qty: 1</Text>
