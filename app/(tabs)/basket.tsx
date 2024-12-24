@@ -14,7 +14,7 @@ function Products() {
     const [basket, setBasket] = useState<iProducts[]>([]);
     const animation = useState(new Animated.Value(0))[0]
 
-    
+
     useFocusEffect(
         React.useCallback(() => {
             Animated.timing(animation, {
@@ -31,41 +31,39 @@ function Products() {
     const loadBasket = async () => {
         const exitingProducts = await AsyncStorage.getItem('prod')
         const parsed = exitingProducts && JSON.parse(exitingProducts) || []
-        const result = [];
-        for (let i = 0; i < storage.length; i++) {
-            for (let a = 0; a < parsed.length; a++) {
-                if (storage[i].id == parsed[a].id) {
-                    result.push(storage[i])
+        const result: iProducts[] = [];
+
+        parsed.forEach((parsedItem: iProducts) => {
+            const existingProduct = result.find((item) => item.id === parsedItem.id);
+            if (existingProduct) {
+                existingProduct.Qty += parsedItem.Qty;
+            } else {
+                const productToAdd = storage.find(item => item.id === parsedItem.id);
+                if (productToAdd) {
+                    result.push({ ...productToAdd, Qty: parsedItem.Qty });
                 }
             }
+        });
 
-        }
-        setBasket(result)
+        setBasket(result);
+        console.log(result);
+
     }
 
+
     const deleteFromBasket = async (index: number) => {
+        const updatedBasket = basket.filter((_, i) => i !== index);
+
+        setBasket(updatedBasket);
+
+        const simplifiedBasket = updatedBasket.map(({ id, Qty, title, price }) => ({ id, Qty, title, price }));
+
         try {
-            const gettingData = await AsyncStorage.getItem('prod');
-            if (!gettingData) return;
-            const parsedGettingData = gettingData && JSON.parse(gettingData) || [];
-            if (Array.isArray(parsedGettingData)) {
-                const newArray = [...parsedGettingData.slice(0, index), ...parsedGettingData.slice(index + 1)];
-                await AsyncStorage.setItem('prod', JSON.stringify(newArray));
-                const result = [];
-                for (let i = 0; i < storage.length; i++) {
-                    for (let a = 0; a < newArray.length; a++) {
-                        if (storage[i].id == newArray[a].id) {
-                            result.push(storage[i])
-                        }
-                    }
-        
-                }
-                setBasket(result)
-            }
-        } catch (error: any) {
-            console.error(error.message);
+            await AsyncStorage.setItem('prod', JSON.stringify(simplifiedBasket));
+        } catch (error) {
+            console.error("Ошибка при сохранении в AsyncStorage:", error);
         }
-    };
+    }
 
     useEffect(() => {
         loadBasket()
@@ -79,12 +77,12 @@ function Products() {
         <ScrollView style={{ width: '100%' }}>
             <View style={{ gap: 40, flexWrap: 'wrap', justifyContent: 'center', width: '80%', marginLeft: '10%' }}>
                 {basket.map((el, index) => <View key={index} style={styles.item}>
-                    <View style={{  width: 140, }}>
+                    <View style={{ width: 140, }}>
                         {el?.img}
                     </View>
                     <View style={{ gap: 13 }}>
                         <Text style={styles.text}>{el?.title}</Text>
-                        <Text style={styles.textSmall}>Qty: 1</Text>
+                        <Text style={styles.textSmall}>Qty: {el?.Qty}</Text>
                         <Text style={styles.text}>Rs. {el?.price}</Text>
                     </View>
                     <TouchableOpacity onPress={() => deleteFromBasket(index)} style={styles.imgDel}> <DelImg /></TouchableOpacity>
@@ -96,7 +94,7 @@ function Products() {
                 <View style={styles.vector} />
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                     <Text style={styles.textTotal}>Total :</Text>
-                    <Text style={styles.textTotal}>Rs.  {basket.reduce((sum, el: any) => sum + el.price, 0)}</Text>
+                    <Text style={styles.textTotal}>Rs.  {basket.reduce((sum, el: any) => sum + el.price * el.Qty, 0)}</Text>
                 </View>
             </View>
 

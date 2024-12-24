@@ -70,7 +70,7 @@ export default function Detail() {
                     <Text style={styles.text}>Rs.{product[0]?.price}</Text>
                 </View>
 
-                <TouchableOpacity style={styles.btn} onPress={addBascet}> <Text style={styles.titleSing}>Add to Cart</Text> </TouchableOpacity>
+                <TouchableOpacity style={styles.btn} onPress={addBascet}><Text style={styles.titleSing}>Add to Cart</Text></TouchableOpacity>
 
                 <View style={{ width: '90%', gap: 16 }}>
                     <Text style={{ ...styles.titleSing, color: '#000000' }}>More Details</Text>
